@@ -1,5 +1,6 @@
 package toto.view;
 
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,6 +10,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import toto.controler.Controler;
 
 public class IHM {
 
@@ -20,6 +23,10 @@ public class IHM {
 			try {
 				final IHM window = new IHM();
 				window.frame.setVisible(true);
+				Controler controler = new Controler();
+				window.setControler(controler);
+				controler.setIhm(window);
+
 			} catch (final Exception e) {
 				e.printStackTrace();
 			}
@@ -36,6 +43,7 @@ public class IHM {
 	private JLabel lblPrenomLabel;
 	private JLabel lblNomLabel;
 	private JLabel lblMessageLabel;
+	private Controler controler;
 
 	// Text test pour btnLoad
 	private String textTest = "My text";
@@ -46,6 +54,10 @@ public class IHM {
 	 */
 	public IHM() {
 		initialize();
+	}
+
+	public Controler getControler() {
+		return controler;
 	}
 
 	/**
@@ -65,9 +77,9 @@ public class IHM {
 			public void actionPerformed(ActionEvent arg0) {
 				String nom = textNom.getText();
 				String prenom = textPrenom.getText();
+
 				// On apple le methode save depuis le contoler
-				// c.save(nom, prenom);
-				updateNP(nom, prenom);
+				controler.save(prenom, nom);
 			}
 		});
 		btnSave.setBounds(161, 125, 97, 25);
@@ -105,21 +117,30 @@ public class IHM {
 		btnLoad.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				updateList(textTest);
+				controler.load();
 			}
 		});
 		btnLoad.setBounds(161, 386, 97, 25);
 		frame.getContentPane().add(btnLoad);
 
 		lblMessageLabel = new JLabel("");
+		lblMessageLabel.setForeground(Color.BLACK);
 		lblMessageLabel.setBounds(12, 13, 395, 44);
 		frame.getContentPane().add(lblMessageLabel);
-
-		// Test methode updateErreur
-		updateErreur(textTest);
 	}
 
-	// Mes methodes
+	public void setColorErreur() {
+		lblMessageLabel.setForeground(Color.RED);
+	}
+
+	public void setColorSucces() {
+		lblMessageLabel.setForeground(Color.GREEN);
+	}
+
+	public void setControler(Controler controler) {
+		this.controler = controler;
+	}
+
 	public void updateErreur(String e) {
 		lblMessageLabel.setText(e);
 	}
@@ -128,7 +149,7 @@ public class IHM {
 		textEleves.setText(list);
 	}
 
-	public void updateNP(String nom, String prenom) {
-
+	public void updateNP(String prenom, String nom) {
+		controler.save(prenom, nom);
 	}
 }

@@ -5,6 +5,11 @@ public class EleveBean {
 	public String nom;
 	public String prenom;
 
+	public EleveBean(String nom, String prenom) {
+		super();
+		this.nom = nom;
+		this.prenom = prenom;
+	}
 	public Long getId() {
 		return id;
 	}
